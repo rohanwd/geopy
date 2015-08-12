@@ -12,13 +12,12 @@ class Location(object): # pylint: disable=R0903,R0921
     (location<String>, (latitude<float>, longitude<Float)). Or one can access
     the properties `address`, `latitude`, `longitude`, or `raw`. The last
     is a dictionary of the geocoder's response for this item.
-
     .. versionadded:: 0.98
     """
 
     __slots__ = ("_address", "_point", "_tuple", "_raw")
 
-    def __init__(self, address="", point=None, raw=None):
+    def __init__(self, address="", point=None, accuracy = None, raw=None):
         self._address = address
         if point is None:
             self._point = (None, None, None)
@@ -34,6 +33,7 @@ class Location(object): # pylint: disable=R0903,R0921
                 type(point), type(string_compare)
             )
         self._tuple = (self._address, (self._point[0], self._point[1]))
+        self._accuracy = accuracy
         self._raw = raw
 
     @property
@@ -41,7 +41,6 @@ class Location(object): # pylint: disable=R0903,R0921
         """
         Location as a formatted string returned by the geocoder or constructed
         by geopy, depending on the service.
-
         :rtype: unicode
         """
         return self._address
@@ -50,7 +49,6 @@ class Location(object): # pylint: disable=R0903,R0921
     def latitude(self):
         """
         Location's latitude.
-
         :rtype: float or None
         """
         return self._point[0]
@@ -59,7 +57,6 @@ class Location(object): # pylint: disable=R0903,R0921
     def longitude(self):
         """
         Location's longitude.
-
         :rtype: float or None
         """
         return self._point[1]
@@ -68,7 +65,6 @@ class Location(object): # pylint: disable=R0903,R0921
     def altitude(self):
         """
         Location's altitude.
-
         :rtype: float or None
         """
         return self._point[2]
@@ -78,17 +74,22 @@ class Location(object): # pylint: disable=R0903,R0921
         """
         :class:`geopy.point.Point` instance representing the location's
         latitude, longitude, and altitude.
-
         :rtype: :class:`geopy.point.Point` or None
         """
-        return self._point if self._point != (None, None, None) else None
-
+        return self._point if self._point != (None, None, None) else None     
+    
+    @property
+    def accuracy(self):
+        """
+        Location's accuracy
+        """
+        return self._accuracy
+    
     @property
     def raw(self):
         """
         Location's raw, unparsed geocoder response. For details on this,
         consult the service's documentation.
-
         :rtype: dict or None
         """
         return self._raw
@@ -125,6 +126,7 @@ class Location(object): # pylint: disable=R0903,R0921
             isinstance(other, Location) and
             self._address == other._address and  # pylint: disable=W0212
             self._point == other._point and  # pylint: disable=W0212
+            self.accuracy == other.accuracy and            
             self.raw == other.raw
         )
 
@@ -133,4 +135,3 @@ class Location(object): # pylint: disable=R0903,R0921
 
     def __len__(self): # pragma: no cover
         return len(self._tuple)
-
