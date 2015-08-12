@@ -15,7 +15,7 @@ class Location(object): # pylint: disable=R0903,R0921
     .. versionadded:: 0.98
     """
 
-    __slots__ = ("_address", "_point", "_tuple", "_raw")
+    __slots__ = ("_address", "_point", "_tuple", "_accuracy", "_raw")
 
     def __init__(self, address="", point=None, accuracy = None, raw=None):
         self._address = address
