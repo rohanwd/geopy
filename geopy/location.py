@@ -107,13 +107,13 @@ class Location(object): # pylint: disable=R0903,R0921
 
     def __repr__(self):
         if py3k:
-            return "Location(%s, (%s, %s, %s))" % (
-                self._address, self.latitude, self.longitude, self.altitude
+            return "Location(%s, (%s, %s, %s), %s)" % (
+                self._address, self.latitude, self.longitude, self.altitude, self._accuracy
             )
         else:
             # Python 2 should not return unicode in __repr__:
             # http://bugs.python.org/issue5876
-            return "Location((%s, %s, %s))" % (
+            return "Location((%s, %s, %s, %s))" % (
                 self.latitude, self.longitude, self.altitude
             )
 
@@ -126,7 +126,7 @@ class Location(object): # pylint: disable=R0903,R0921
             isinstance(other, Location) and
             self._address == other._address and  # pylint: disable=W0212
             self._point == other._point and  # pylint: disable=W0212
-            self.accuracy == other.accuracy and            
+            self._accuracy == other._accuracy and            
             self.raw == other.raw
         )
 
