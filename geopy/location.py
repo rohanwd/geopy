@@ -15,9 +15,9 @@ class Location(object): # pylint: disable=R0903,R0921
     .. versionadded:: 0.98
     """
 
-    __slots__ = ("_address", "_point", "_tuple", "_accuracy", "_raw")
+    __slots__ = ("_address", "_point", "_accuracy", "_tuple", "_raw")
 
-    def __init__(self, address="", point=None, accuracy = "", raw=None):
+    def __init__(self, address="", point=None, accuracy= "", raw=None):
         self._address = address
         if point is None:
             self._point = (None, None, None)
@@ -32,8 +32,8 @@ class Location(object): # pylint: disable=R0903,R0921
                 "point an unsupported type: %r; use %r or Point",
                 type(point), type(string_compare)
             )
-        self._tuple = (self._address, (self._point[0], self._point[1]))
         self._accuracy = accuracy
+        self._tuple = (self._address, (self._point[0], self._point[1]),self._accuracy)        
         self._raw = raw
 
     @property
