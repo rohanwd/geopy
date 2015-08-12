@@ -29,17 +29,13 @@ class GeocodeFarm(Geocoder):
         ):  # pylint: disable=R0913
         """
         Create a geocoder for GeocodeFarm.
-
             .. versionadded:: 0.99
-
         :param string api_key: The API key required by GeocodeFarm to perform
             geocoding requests.
-
         :param string format_string: String containing '%s' where the
             string to geocode should be interpolated before querying the
             geocoder. For example: '%s, Mountain View, CA'. The default
             is just '%s'.
-
         :param dict proxies: If specified, routes this geocoder's requests
             through the specified proxy. E.g., {"https": "192.0.2.0"}. For
             more information, see documentation on
@@ -60,12 +56,9 @@ class GeocodeFarm(Geocoder):
     def geocode(self, query, exactly_one=True, timeout=None):
         """
         Geocode a location query.
-
         :param string query: The address or query you wish to geocode.
-
         :param bool exactly_one: Return one result or a list of results, if
             available.
-
         :param int timeout: Time, in seconds, to wait for the geocoding service
             to respond before raising a :class:`geopy.exc.GeocoderTimedOut`
             exception. Set this only if you wish to override, on this call
@@ -85,16 +78,13 @@ class GeocodeFarm(Geocoder):
     def reverse(self, query, exactly_one=True, timeout=None):
         """
         Returns a reverse geocoded location.
-
         :param query: The coordinates for which you wish to obtain the
             closest human-readable addresses.
         :type query: :class:`geopy.point.Point`, list or tuple of (latitude,
             longitude), or string as "%(latitude)s, %(longitude)s"
-
         :param bool exactly_one: Return one result or a list of results, if
             available. GeocodeFarm's API will always return at most one
             result.
-
         :param int timeout: Time, in seconds, to wait for the geocoding service
             to respond before raising a :class:`geopy.exc.GeocoderTimedOut`
             exception. Set this only if you wish to override, on this call
@@ -131,12 +121,13 @@ class GeocodeFarm(Geocoder):
             latitude = coordinates.get('latitude', None)
             longitude = coordinates.get('longitude', None)
             placename = address.get('address_returned', None)
+            accuracy = result.get('accuracy', {})
             if placename is None:
                 placename = address.get('address', None)
             if latitude and longitude:
                 latitude = float(latitude)
                 longitude = float(longitude)
-            places.append(Location(placename, (latitude, longitude), result))
+            places.append(Location(placename, (latitude, longitude), accuracy, result))
         return places
 
     def _parse_json(self, api_result, exactly_one):
